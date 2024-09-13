@@ -1,8 +1,8 @@
 package br.usp.esimulados.resource;
 
-import br.usp.esimulados.model.questions.CreateComment;
-import br.usp.esimulados.model.questions.CreateQuestion;
 import br.usp.esimulados.model.questions.Question;
+import br.usp.esimulados.model.questions.dto.CreateCommentDTO;
+import br.usp.esimulados.model.questions.dto.CreateQuestionDTO;
 import br.usp.esimulados.service.QuestionsService;
 import io.vertx.core.http.HttpServerRequest;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -49,7 +49,7 @@ public class QuestionsResource {
                     ))
             })
     public Response createQuestion(
-           @Valid @RequestBody(description = "Lista de presentes a serem criados") CreateQuestion createQuestion
+           @Valid @RequestBody(description = "Lista de presentes a serem criados") CreateQuestionDTO createQuestion
     ) {
         log.info("Request: {}", request.toString());
         return Response.ok(questionsService.createQuestion(createQuestion)).build();
@@ -61,7 +61,7 @@ public class QuestionsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     public Response addComment(
             @PathParam("id") Long questionId,
-            @RequestBody(description = "Comentário") CreateComment comment
+            @RequestBody(description = "Comentário") CreateCommentDTO comment
     ) {
         this.questionsService.addComment(questionId, comment);
         return Response.ok().build();

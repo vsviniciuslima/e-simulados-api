@@ -1,7 +1,7 @@
 package br.usp.esimulados.resource;
 
-import br.usp.esimulados.model.exam.CreateExam;
 import br.usp.esimulados.model.exam.Exam;
+import br.usp.esimulados.model.exam.dto.CreateExamDTO;
 import br.usp.esimulados.service.ExamsService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -44,7 +44,7 @@ public class ExamsResource {
                     ))
             })
     public Response createExam(
-           @Valid @RequestBody(description = "Simulado a ser criado") CreateExam createExam
+           @Valid @RequestBody(description = "Simulado a ser criado") CreateExamDTO createExam
     ) {
         return Response.ok(examsService.createExam(createExam)).build();
     }
