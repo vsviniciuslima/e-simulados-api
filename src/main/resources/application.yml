@@ -1,0 +1,53 @@
+quarkus:
+  console:
+    color: true
+  hibernate-orm:
+    physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    database:
+      generation: none
+  http:
+    proxy:
+      allow-forwarded: true
+      enable-forwarded-host: true
+    port: ${PORT:8080}
+    cors:
+      ~: true
+      headers: accept, authorization, content-type, x-requested-with
+      methods: GET, OPTIONS, POST, DELETE, PATCH, PUT
+  smallrye-openapi:
+    info-license-url: https://www.apache.org/licenses/LICENSE-2.0.html
+    info-version: 1.0.1
+    info-contact-email: vsviniciuslima@gmail.com
+    info-contact-url: https://vsviniciuslima.dev/contact
+    info-license-name: Apache 2.0
+    info-title: E-Simulados
+    info-description: Plataforma de simulados
+    info-terms-of-service: Your terms here
+    info-contact-name: Vinicius Santana
+'%test':
+  quarkus:
+    datasource:
+      db-kind: h2
+'%dev':
+  quarkus:
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+    datasource:
+      db-kind: postgresql
+    http:
+      cors:
+        origins: http://localhost:3000
+    live-reload:
+      instrumentation: true
+'%prod':
+  quarkus:
+    datasource:
+      db-kind: postgresql
+      username: ${APP_DB_USER}
+      password: ${APP_DB_PASSWORD}
+      jdbc:
+        url: ${APP_DB_HOST}
+    http:
+      cors:
+        origins: ${APP_CORS_ORIGIN}
