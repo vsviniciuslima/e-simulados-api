@@ -6,10 +6,14 @@ import br.usp.esimulados.model.exam.dto.AttemptExamDTO;
 import br.usp.esimulados.model.exam.dto.CreateExamDTO;
 import br.usp.esimulados.model.questions.Comment;
 import br.usp.esimulados.model.questions.Question;
+import br.usp.esimulados.model.questions.QuestionAlternative;
 import br.usp.esimulados.model.questions.dto.CreateCommentDTO;
+import br.usp.esimulados.model.questions.dto.CreateQuestionAlternativeDTO;
 import br.usp.esimulados.model.questions.dto.CreateQuestionDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+
+import java.util.List;
 
 @Mapper(componentModel = "cdi")
 public interface EntityMapper {
@@ -23,6 +27,11 @@ public interface EntityMapper {
 
     @Mapping(target = "comments", ignore = true)
     Question createQuestionToQuestion(CreateQuestionDTO createQuestion);
+
+    @Mapping(target = "uuid", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    QuestionAlternative createQuestionAlternativeToQuestionAlternative(CreateQuestionAlternativeDTO createQuestionAlternative);
 
     @Mapping(target = "active", ignore = true)
     @Mapping(target = "createdAt", ignore = true)

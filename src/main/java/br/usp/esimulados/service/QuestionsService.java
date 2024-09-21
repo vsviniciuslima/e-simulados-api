@@ -3,7 +3,10 @@ package br.usp.esimulados.service;
 import br.usp.esimulados.exception.ObjectNotFoundException;
 import br.usp.esimulados.model.questions.Comment;
 import br.usp.esimulados.model.questions.Question;
+import br.usp.esimulados.model.questions.QuestionAlternative;
+import br.usp.esimulados.model.questions.QuestionHistory;
 import br.usp.esimulados.model.questions.dto.CreateCommentDTO;
+import br.usp.esimulados.model.questions.dto.CreateQuestionAlternativeDTO;
 import br.usp.esimulados.model.questions.dto.CreateQuestionDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -14,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Slf4j
 @ApplicationScoped
@@ -25,6 +29,15 @@ public class QuestionsService {
 
     public Question createQuestion(CreateQuestionDTO newQuestion) {
         Question question = entityMapper.createQuestionToQuestion(newQuestion);
+
+        // Mapeamento manual das alternativas
+        List<QuestionAlternative> alternatives = newQuestion.questionAlternatives()
+                .stream()
+                .map(entityMapper::createQuestionAlternativeToQuestionAlternative)
+                .collect(Collectors.toList());
+
+        question.setAlternatives(alternatives);
+
         log.info("Creating question: {}", question);
         question.persist();
         return question;

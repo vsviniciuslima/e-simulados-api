@@ -35,8 +35,8 @@ public class QuestionsResource {
     @Inject
     HttpServerRequest request;
 
-    @Transactional
     @POST
+    @Transactional
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Criar questão")
     @APIResponse(description = "Questão criada",
@@ -49,7 +49,7 @@ public class QuestionsResource {
                     ))
             })
     public Response createQuestion(
-           @Valid @RequestBody(description = "Lista de presentes a serem criados") CreateQuestionDTO createQuestion
+           @Valid @RequestBody(description = "Questão a ser criada") CreateQuestionDTO createQuestion
     ) {
         log.info("Request: {}", request.toString());
         return Response.ok(questionsService.createQuestion(createQuestion)).build();
