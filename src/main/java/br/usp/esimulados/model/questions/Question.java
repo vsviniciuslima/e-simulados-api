@@ -39,11 +39,15 @@ public class Question extends PanacheEntity {
     @Column(name = "comments", columnDefinition = "jsonb"/*, insertable = false, updatable = false*/)
     private List<Comment> comments;
 
-    private QuestionDifficulty difficulty; // EASY, MEDIUM, HARD
+    private QuestionDifficulty questionDifficulty; // EASY, MEDIUM, HARD
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "alternatives", columnDefinition = "jsonb"/*, insertable = false, updatable = false*/)
     private List<QuestionAlternative> alternatives;
+
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "questionHistory", columnDefinition = "jsonb")
+    private QuestionHistory questionHistory = new QuestionHistory();
 
     private UUID uuid = UUID.randomUUID();
     private LocalDateTime createdAt = LocalDateTime.now();
