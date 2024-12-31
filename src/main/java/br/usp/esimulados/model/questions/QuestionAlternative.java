@@ -4,8 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 public record QuestionAlternative(
+    String label,
     List<String> imageUrls,
-    String content,
-    boolean correct,
-    UUID uuid
+    String content
 ) { }

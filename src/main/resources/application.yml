@@ -4,7 +4,7 @@ quarkus:
   hibernate-orm:
     physical-naming-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
     database:
-      generation: none
+      generation: drop-and-create
   http:
     proxy:
       allow-forwarded: true

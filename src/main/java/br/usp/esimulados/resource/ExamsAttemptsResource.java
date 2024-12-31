@@ -1,6 +1,7 @@
 package br.usp.esimulados.resource;
 
 import br.usp.esimulados.model.exam.Exam;
+import br.usp.esimulados.model.exam.ExamAttempt;
 import br.usp.esimulados.model.exam.dto.AttemptExamDTO;
 import br.usp.esimulados.service.ExamAttemptsService;
 import io.vertx.core.http.HttpServerRequest;
@@ -24,8 +25,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Slf4j
 @ApplicationScoped
-@Tag(name = "Tentativas")
-@Path("/exams_attempts")
+@Tag(name = "ExamAttempts")
+@Path("/exam-attempts")
 public class ExamsAttemptsResource {
 
     @Inject
@@ -38,12 +39,12 @@ public class ExamsAttemptsResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Operation(summary = "Tentativa")
-    @APIResponse(description = "Simulado criado",
+    @APIResponse(description = "A tentativa de simulado",
             responseCode = "200",
             content = { @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            implementation = Exam.class,
+                            implementation = ExamAttempt.class,
                             type = SchemaType.OBJECT
                     ))
             })

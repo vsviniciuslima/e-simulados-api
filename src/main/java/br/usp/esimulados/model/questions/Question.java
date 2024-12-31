@@ -1,18 +1,19 @@
 package br.usp.esimulados.model.questions;
 
+import br.usp.esimulados.common.entity.ExtendedEntity;
+import br.usp.esimulados.model.common.Difficulty;
+import br.usp.esimulados.model.common.Discipline;
+import br.usp.esimulados.model.common.ExamType;
+import br.usp.esimulados.model.common.Topic;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.ManyToOne;
+import lombok.*;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -21,11 +22,15 @@ import java.util.UUID;
 @Entity(name = "questions")
 public class Question extends PanacheEntity {
 
-    private String statement; // enunciado
+    @Column(columnDefinition = "TEXT")
+    private String statement;
     private String explanation;
+    private Difficulty difficulty;
+    private ExamType examType;
 
-    private String topic;
-    private String subTopic;
+    @ManyToOne private Discipline discipline;
+    @ManyToOne private Topic topic;
+
     private int year;
     private String source;
     private String sourceUrl;
@@ -39,13 +44,10 @@ public class Question extends PanacheEntity {
     @Column(name = "comments", columnDefinition = "jsonb"/*, insertable = false, updatable = false*/)
     private List<Comment> comments;
 
-    private QuestionDifficulty difficulty; // EASY, MEDIUM, HARD
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "alternatives", columnDefinition = "jsonb"/*, insertable = false, updatable = false*/)
     private List<QuestionAlternative> alternatives;
+    private char correctAlternative;
 
-    private UUID uuid = UUID.randomUUID();
-    private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
 }

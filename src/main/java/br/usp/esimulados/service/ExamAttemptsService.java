@@ -1,10 +1,9 @@
 package br.usp.esimulados.service;
 
-import br.usp.esimulados.exception.ObjectNotFoundException;
+import br.usp.esimulados.exception.EntityNotFoundException;
 import br.usp.esimulados.model.exam.Exam;
 import br.usp.esimulados.model.exam.ExamAttempt;
 import br.usp.esimulados.model.exam.dto.AttemptExamDTO;
-import br.usp.esimulados.model.user.User;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
@@ -19,15 +18,29 @@ public class ExamAttemptsService {
     EntityMapper entityMapper;
 
     public ExamAttempt add(AttemptExamDTO attemptExam) {
-        if(Exam.findById(attemptExam.examId()) == null) {
-            throw new ObjectNotFoundException("Exam not found");
-        }
-
-        if(User.findById(attemptExam.userId()) == null) {
-            throw new ObjectNotFoundException("User not found");
-        }
+        Exam exam = (Exam) Exam.findByIdOptional(attemptExam.examId())
+                .orElseThrow(() -> new EntityNotFoundException("Exam not found"));
 
         ExamAttempt examAttempt = entityMapper.attemptExamToExamAttempt(attemptExam);
+
+        exam.getQuestions()
+                .forEach(question -> attemptExam.answers()
+                .stream()
+                .filter(answer -> answer.questionId().equals(question.id))
+                .findFirst()
+                .ifPresent(answer -> {
+                    if(question.getCorrectAlternative() == answer.alternativeId()) {
+                        examAttempt.setScore(examAttempt.getScore() + 1);
+                    }
+                }));
+        if(Exam.findById(attemptExam.examId()) == null) {
+            throw new EntityNotFoundException("Exam not found");
+        }
+
+//        if(User.findById(attemptExam.userId()) == null) {
+//            throw new ObjectNotFoundException("User not found");
+//        }
+
         examAttempt.persist();
         return examAttempt;
     }

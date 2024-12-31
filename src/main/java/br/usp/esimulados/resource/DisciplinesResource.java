@@ -1,17 +1,20 @@
 package br.usp.esimulados.resource;
 
+import br.usp.esimulados.model.common.CreateDiscipline;
+import br.usp.esimulados.model.common.Discipline;
 import br.usp.esimulados.model.exam.Exam;
-import br.usp.esimulados.model.exam.dto.AddExamQuestion;
-import br.usp.esimulados.model.exam.dto.CreateExamDTO;
-import br.usp.esimulados.service.ExamsService;
+import br.usp.esimulados.model.exam.dto.AttemptExamDTO;
+import br.usp.esimulados.service.EntityMapper;
+import br.usp.esimulados.service.ExamAttemptsService;
+import io.vertx.core.http.HttpServerRequest;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import lombok.extern.slf4j.Slf4j;
@@ -24,42 +27,34 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 @Slf4j
-@Path("/exams")
+@Tag(name = "Disciplines")
 @ApplicationScoped
-@Tag(name = "Exams")
-public class ExamsResource {
+@Path("/disciplines")
+public class DisciplinesResource {
 
     @Inject
-    ExamsService examsService;
+    EntityMapper entityMapper;
 
     @Transactional
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    @Operation(summary = "Criar simulado")
-    @APIResponse(description = "Simulado criado",
+    @Operation(summary = "Criar disciplina")
+    @APIResponse(description = "Disciplina criada",
             responseCode = "200",
             content = { @Content(
                     mediaType = "application/json",
                     schema = @Schema(
-                            implementation = Exam.class,
+                            implementation = Discipline.class,
                             type = SchemaType.OBJECT
                     ))
             })
-    public Response createExam(
-           @Valid @RequestBody(description = "Simulado a ser criado") CreateExamDTO createExam
+    public Response add(
+           @Valid @RequestBody(description = "Simulado a ser criado") CreateDiscipline createDiscipline
     ) {
-        return Response.ok(examsService.createExam(createExam)).build();
-    }
+        Discipline discipline = entityMapper.createDisciplineToDiscipline(createDiscipline);
+        discipline.persist();
 
-    @Transactional
-    @POST
-    @Path("/{examId}/questions")
-    public Response addQuestion(
-            @Valid @RequestBody AddExamQuestion addExamQuestion,
-            @PathParam("examId") Long examId
-    ) {
-        examsService.addQuestion(addExamQuestion, examId);
-        return Response.ok().build();
+        return Response.ok(discipline).build();
     }
 
 }

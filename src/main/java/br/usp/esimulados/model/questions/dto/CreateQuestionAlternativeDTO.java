@@ -5,7 +5,7 @@ import jakarta.validation.constraints.NotNull;
 import java.util.List;
 
 public record CreateQuestionAlternativeDTO(
-    List<String> imageUrls,
+    String label,
     @NotNull String content,
-    @NotNull boolean correct
+    List<String> imageUrls
 ) { }

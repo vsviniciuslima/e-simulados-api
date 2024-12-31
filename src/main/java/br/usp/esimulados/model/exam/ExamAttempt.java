@@ -1,5 +1,6 @@
 package br.usp.esimulados.model.exam;
 
+import br.usp.esimulados.model.exam.dto.Answer;
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -23,8 +24,7 @@ public class ExamAttempt extends PanacheEntity {
     private Long examId;
     private Long userId;
     private int examVersion;
-    private int totalQuestions;
-    private int totalCorrectAnswers;
+    private int score;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "answers", columnDefinition = "jsonb"/*, insertable = false, updatable = false*/)

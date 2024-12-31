@@ -1,0 +1,80 @@
+### Criar disciplina
+POST http://localhost:8080/disciplines
+Content-Type: application/json
+
+{
+  "name": "História"
+}
+
+### Criar Tópico
+POST http://localhost:8080/topics
+Content-Type: application/json
+
+{
+  "name": "Idade Média",
+  "disciplineId": 1
+}
+
+### Listar questões
+GET http://localhost:8080/questions
+Content-Type: application/json
+
+### Criar questão
+POST http://localhost:8080/questions
+Content-Type: application/json
+
+{
+  "statement": "string",
+  "explanation": "string",
+  "difficulty": "EASY",
+  "examType": "VESTIBULAR",
+  "disciplineId": 1,
+  "topicId": 1,
+  "year": 0,
+  "source": "string",
+  "sourceUrl": "string",
+  "authorId": "string",
+  "tags": [
+    "string"
+  ],
+  "questionAlternatives": [
+    {
+      "label": "A",
+      "imageUrls": [
+        "string"
+      ],
+      "content": "string"
+    }
+  ]
+}
+
+### Criar Simulado
+POST localhost:8080/exams
+Content-Type: application/json
+
+{
+  "questionIds": [
+    "1"
+  ],
+  "tags": [
+    "string"
+  ],
+  "category": "string",
+  "subCategory": "string",
+  "author": "string",
+  "authorId": "string",
+  "name": "string",
+  "description": "string",
+  "imageUrl": "string"
+}
+
+### Adicionar questão a simulado
+POST http://localhost:8080/exams/1/questions
+Content-Type: application/json
+
+{
+  "questionsIds": [1]
+}
+
+### Consultar simulado
+GET localhost:8080/exams/1
